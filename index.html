@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шифр Цезаря</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 90%;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    p {
+        color: #666;
+        margin-bottom: 10px;
+    }
+    textarea, input[type="number"], button {
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    button {
+        display: block;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #outputText {
+        width: calc(100% - 20px);
+        height: 100px;
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Шифр Цезаря</h1>
+    <p>Введите текст для шифрования/дешифрования и укажите сдвиг:</p>
+    <textarea id="inputText" placeholder="Введите текст" rows="4"></textarea>
+    <input type="number" id="shiftAmount" placeholder="Укажите сдвиг">
+    <button onclick="encrypt()">Зашифровать</button>
+    <button onclick="decrypt()">Расшифровать</button>
+    <p>Результат:</p>
+    <textarea id="outputText" readonly></textarea>
+</div>
+
+<script>
+    function encrypt() {
+        var inputText = document.getElementById("inputText").value;
+        var shiftAmount = parseInt(document.getElementById("shiftAmount").value);
+        var encryptedText = "";
+        for (var i = 0; i < inputText.length; i++) {
+            var charCode = inputText.charCodeAt(i);
+            if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
+                encryptedText += String.fromCharCode((charCode + shiftAmount - 65) % 26 + 65);
+            } else if ((charCode >= 1040 && charCode <= 1071) || (charCode >= 1072 && charCode <= 1103)) {
+                encryptedText += String.fromCharCode((charCode + shiftAmount - 1040) % 32 + 1040);
+            } else {
+                encryptedText += inputText.charAt(i);
+            }
+        }
+        document.getElementById("outputText").value = encryptedText;
+    }
+
+    function decrypt() {
+        var inputText = document.getElementById("inputText").value;
+        var shiftAmount = parseInt(document.getElementById("shiftAmount").value);
+        var decryptedText = "";
+        for (var i = 0; i < inputText.length; i++) {
+            var charCode = inputText.charCodeAt(i);
+            if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
+                decryptedText += String.fromCharCode((charCode - shiftAmount - 90) % 26 + 90);
+            } else if ((charCode >= 1040 && charCode <= 1071) || (charCode >= 1072 && charCode <= 1103)) {
+                decryptedText += String.fromCharCode((charCode - shiftAmount - 1071) % 32 + 1071);
+            } else {
+                decryptedText += inputText.charAt(i);
+            }
+        }
+        document.getElementById("outputText").value = decryptedText;
+    }
+</script>
+</body>
+</html>
